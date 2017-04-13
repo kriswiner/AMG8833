@@ -14,11 +14,12 @@
 #define rst  4   // RST can use any pin
 #define sdcs 3   // CS for SD card, can use any pin
 
-#include <TFT_ST7735.h>
+#include <Adafruit_GFX.h>    // Core graphics library
+#include <Adafruit_ST7735.h> // Hardware-specific library
 #include <SPI.h>
 #include <Wire.h>
 
-TFT_ST7735 tft = TFT_ST7735(cs, dc);
+Adafruit_ST7735 tft = Adafruit_ST7735(cs, dc, mosi, sclk, rst);
 float p = 3.1415926f;
 
 // Color definitions
@@ -78,7 +79,6 @@ uint8_t rgb, red, green, blue;
 
 // define pin connections
 #define intPin  8
-#define ledPin  13
 
 uint8_t rgb_colors[600] =
 {  0,   0,   0,
@@ -298,14 +298,14 @@ enum mode {  // define IR Array operating mode
 void setup() 
 {
   pinMode(sdcs, INPUT_PULLUP);  // don't touch the SD card
-  pinMode(ledPin, OUTPUT);
-  digitalWrite(ledPin, LOW);  // start with led off (active HIGH)
   
   Serial.begin(38400);
   delay(2000);
   Serial.println("AMG8833 Grid-Eye 8 x 8 IR Array");
+
+  tft.initR(INITR_BLACKTAB);   // initialize a ST7735S chip, black tab
   
-  tft.begin();   // initialize a ST7735S chip, black tab
+  //tft.begin();   // initialize a ST7735S chip, black tab
   tft.setRotation(3); // 0, 2 are portrait mode, 1,3 are landscape mode
   Serial.println("initialize display");
 
@@ -367,7 +367,7 @@ void loop()
     }
     }
 
-      tft.setTextScale(0);
+      tft.setTextSize(0);
       tft.setTextColor(WHITE);
       tft.setCursor(10, 50 );
       tft.print("min T = "); tft.print((uint8_t) minTemp);
@@ -379,7 +379,7 @@ void loop()
  
       tmpTemp = 0;
       
-      digitalWrite(ledPin, HIGH); delay(500); digitalWrite(ledPin, LOW);
+      delay(500);
 }
 
 
