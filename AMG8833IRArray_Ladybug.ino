@@ -1,12 +1,11 @@
 /* AMG88331IRArray_Ladybug
  *  
- *  Basic program to get 4 x 16 temperature array data from the MLX9062X I2C thermal sensor
+ *  Basic program to get 8 x 8 temperature array data from the AMG8833 I2C thermal sensor
  *  
- *  Intended to run on theLadybug as host, but any host with an I2C bus should work well.
- *  
+ *  Intended to run on the Butterfly as host, but any host with an I2C bus should work well.  
  *  
  */
-// This Ldybug native optimized version requires specific pins
+// This Ladybug native optimized version requires specific pins
 //
 #define sclk 13  // SCLK can also use pin 14
 #define mosi 11  // MOSI can also use pin 7
@@ -365,19 +364,22 @@ void loop()
       tft.fillRect(x*10, y*10, 10, 10, color);
 //      tft.drawRect(x*10, y*10, 10, 10, BLACK);  
 
+    }
+    }
+
       tft.setTextScale(0);
       tft.setTextColor(WHITE);
       tft.setCursor(10, 50 );
       tft.print("min T = "); tft.print((uint8_t) minTemp);
       tft.setCursor(10, 66 );
       tft.print("max T = "); tft.print((uint8_t) maxTemp);
+
+      Serial.print("min T = "); Serial.println((uint8_t) minTemp);
+      Serial.print("max T = "); Serial.println((uint8_t) maxTemp);
  
       tmpTemp = 0;
-
-    }
-    }
       
-   digitalWrite(ledPin, HIGH); delay(500); digitalWrite(ledPin, LOW);
+      digitalWrite(ledPin, HIGH); delay(500); digitalWrite(ledPin, LOW);
 }
 
 
